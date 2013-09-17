@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>MapCache: The Fast Tiling Server</title>
+
+        <meta name="description" content="MapCache is a library that is used to create tile servers with advanced functionalities and very good performance">
+        <meta name="author" content="Thomas Bonfort">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="reveal.js/css/theme/osgeo.css" id="theme">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+
+        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+                <section>
+                    <h1>MapServer MapCache: Fast and Featureful Tile Serving</h1>
+                    <p></p>
+                    <p>@tbonfort</p>
+                    
+                    <aside class="notes">
+                        Notes go here
+                    </aside>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>What's MapCache?</h2>
+                        <ul>
+                           <li>Tiling Library with Apache, FastCGI, Nginx and Node frontends
+                           <li>Versatile
+                              <ul>
+                                 <li>Multiple Cache Backends
+                                 <li>Multiple Protocols
+                                 <li>Tile Management Features: seeding, recompression, interpolation
+                              </ul>
+                           <li>Native Code: Fast and Efficient
+                           <li>Ease Deployment: Demo interface
+                    </section>
+                    <section>
+                        <h2>History</h2>
+                        <ul>
+                           <li>Started as an independant project in 2010
+                           <li>Integrated under MapServer governance in 2012
+
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Caches</h2>
+                        <ul>
+                           <li>Backend able to store tile data for given x,y,z</li>
+                           <li>Extensible: Exists(), Get(), Put(), Delete()</li>
+                           <li>Some backend specific hacks: symlinking, blank detection</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Disk Cache</h2>
+                        <ul>
+                           <li>Mainly for dev, testing, or small tilesets
+                           <li>Pros
+                              <ul>
+                                 <li>Simple, just provide a base directory
+                                 <li>Fast
+                                 <li>Supports blank tile detection
+                              </ul>
+                           </li>
+                           <li>Cons
+                              <ul>
+                                 <li>Difficult to manage large number of files
+                                 <li>Hits File System Limits
+                                 <li>Wasted space due to File Sytem block size
+                              </ul>
+                           </li>
+                        </ul> 
+                    </section>
+                    <section>
+                        <h2>Sqlite Cache</h2>
+                        <ul>
+                           <li>Stores tile data as blobs in an sqlite file
+                           <li>Pros
+                              <ul>
+                                 <li>Single File
+                                 <li>Extensible to support any schema (MBtiles implemented)
+                                 <li>Efficient Space (blank tile detection possible)
+                              </ul>
+                           </li>
+                           <li>Cons
+                              <ul>
+                                 <li>Some tweaking needed for very large caches (more than 1 Tb)
+                                 <li>Concurrent Insertions
+                              </ul>
+                           </li>
+                        </ul> 
+                    </section>
+                    <section>
+                        <h2>MemCache</h2>
+                        <ul>
+                           <li>Ideal for Temporary Data: Forecasts, Sensors, ...
+                           <li>Pros
+                              <ul>
+                                 <li>Easily distributed
+                                 <li>Automatic pruning
+                              </ul>
+                           </li>
+                           <li>Cons
+                              <ul>
+                                 <li>Limited Storage
+                              </ul>
+                           </li>
+                        </ul> 
+                    </section>
+                    <section>
+                        <h2>(Geo)TIFF Cache</h2>
+                        <ul>
+                           <li>Specialized storage for satellite imagery basemaps
+                           <li>JPEG tiles are read directly from a constrained (Geo)TIFF file hierarchy
+                           <li>Pros
+                              <ul>
+                                 <li>Efficient on disk usage (TIFF container)
+                                 <li>TIFF files can be shared with other applications
+                              </ul>
+                           </li>
+                           <li>Cons
+                              <ul>
+                                 <li>Limited to JPEG data (no transparency)
+                                 <li>No Concurrent writing to a single TIFF file
+                                 <li>updates/deletion of individual tiles does not reclaim storage space
+                              </ul>
+                           </li>
+                        </ul> 
+                    </section>
+                </section>
+
+                <section>
+                   <section>
+                      <h2>Protocols</h2>
+                      <ul>
+                         <li>
+
+
+                <section>
+                    <section>
+                        <h2>ngEO Browse Server</h2>
+                    </section>
+                    <section>
+                        <h2>OGC's WMTS and WMS standards</h2>
+                    </section>
+                    <section>
+                        <h2>Entirely Open Source Software: GDAL, MapServer, EOxServer, and MapCache</h2>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2><a href="http://mapserver.org/trunk/en/mapcache/index.html">MapCache</a> Features/Enhancements</h2>
+                    </section>
+                    <section>
+                        <h2>Time dimension support</h2>
+                        <p>Visual representations of search results e.g. single browses or all browses in a specific time interval</p>
+                        <pre><code data-trim contenteditable>
+<tileset name="foss4g">
+    ...
+    <timedimension type="sqlite" default="2013">
+        <dbfile>/var/ngeob_data/mapcache.sqlite</dbfile>
+        <query>select strftime('%Y-%m-%dT%H:%M:%SZ',start_time)||'/'||strftime('%Y-%m-%dT%H:%M:%SZ',end_time) from time where source_id=:tileset and start_time&lt;=datetime(:end_timestamp,'unixepoch') and end_time&gt;=datetime(:start_timestamp,'unixepoch') and maxx&gt;=:minx and maxy&gt;=:miny and minx&lt;=:maxx and miny&lt;=:maxy order by end_time limit 100</query>
+    </timedimension>
+</tileset>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Read-only functionality</h2>
+                        <pre><code data-trim contenteditable>
+<tileset name="foss4g">
+    ...
+    <read-only>true</read-only>
+</tileset>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Configure max-cached-zoom</h2>
+                        <pre><code data-trim contenteditable>
+<tileset name="foss4g">
+    ...
+    <grid max-cached-zoom="8" out-of-zoom-strategy="reassemble">
+        WGS84
+    </grid>
+</tileset>
+                        </code></pre>
+                    </section>
+                    <section>
+                        <h2>Storage optimization e.g. detect_blank</h2>
+                        <pre><code data-trim contenteditable>
+<cache name="foss4g" type="sqlite3">
+    <dbfile>foss4g.sqlite</dbfile>
+    <detect_blank>true</detect_blank>
+</cache>
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Ingesting and pre-processing of browse images</h2>
+                    </section>
+                    <section>
+                        <h2>Geographic metadata</h2>
+                        <ul>
+                            <li>Footprint polygon</li>
+                            <li>Regular grid of tiepoints</li>
+                            <li>Pre-georeferenced images</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Optimizations</h2>
+                        <ul>
+                            <li>Footprint generation</li>
+                            <li>Re-projection</li>
+                            <li>Addition of alpha-channel</li>
+                            <li>Internal tilling</li>
+                            <li>Overviews</li>
+                            <li>Compression</li>
+                        </ul>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Conclusions / Outlook</h2>
+                    </section>
+                    <section>
+                        <h2>TBD</h2>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Thank you for your Attention</h2>
+                    </section>
+                </section>
+
+            </div>
+
+        </div>
+
+        <script src="reveal.js/lib/js/head.min.js"></script>
+        <script src="reveal.js/js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                keyboard: true,
+                touch: true,
+                overview: true,
+                center: true,
+
+                theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+                transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+                    // { src: 'reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } }
+                    // { src: 'reveal.js/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>
