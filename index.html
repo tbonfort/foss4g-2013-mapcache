@@ -152,6 +152,8 @@
                         <ul>
                            <li>Specialized storage for satellite imagery basemaps
                            <li>JPEG tiles are read directly from a constrained (Geo)TIFF file hierarchy
+                           <li>Configurable number of tiles per TIFF file
+                           <li>Templated access to file name
                            <li>Pros
                               <ul>
                                  <li>Efficient on disk usage (TIFF container)
@@ -162,9 +164,10 @@
                               <ul>
                                  <li>Limited to JPEG data (no transparency)
                                  <li>No Concurrent writing to a single TIFF file
-                                 <li>updates/deletion of individual tiles does not reclaim storage space
+                                 <li>Updates/deletion of individual tiles does not reclaim storage space
                               </ul>
                            </li>
+                           <li>Use-Case: TBD
                         </ul> 
                     </section>
                 </section>
@@ -208,6 +211,24 @@
                       </ul>
                    </section>
                 </section>
+                <section>
+                   <section>
+                      <h2>Miscellaneous</h2>
+                      <ul>
+                         <li>Caching HTTP Headers
+                         <li>"Auto" Expiry of old tiles
+                         <li>Error Reporting
+                            <ul>
+                               <li>Error Message
+                               <li>Empty Image
+                               <li>Status Code
+                            </ul>
+                         <li>Meta-Tiling
+                         <li>Watermarking
+                         <li>Max-Cached-Zoom: Upsample lower level tiles 
+                      </ul>
+                   </section>
+               </section>
 
 
                 <section>
@@ -258,6 +279,24 @@
 
                 <section>
                    <section>
+                      <h2>Seeder: Pre-generating tiles</h2>
+                      <ul>
+                         <li>Multi thread/process seeding
+                         <li>"Drill-Down" mode to take advantage of caching on source WMS
+                         <li>Seed particular subset
+                            <ul>
+                               <li>Given Dimension
+                               <li>Regenerate old tiles
+                               <li>Restricted min/max zoom and/or extent
+                               <li>Restrict to geometry (e.g. seed to level 18 all areas where population density is over a given value)
+                            </ul>
+                         <li>Pruning mode
+                      </ul>
+                   </section>
+                </section>
+
+                <section>
+                   <section>
                       <h2>Grids</h2>
                       <ul>
                          <li>Multiple Grids per Tileset (e.g. WGS84 + Mercator)
@@ -272,6 +311,58 @@
                                <li>Restricted extent (with tolerance!)
                             </ul>
                       </ul>
+                   </section>
+                </section>
+                
+                <section>
+                   <section>
+                      <h2>Dimensions</h2>
+                      <ul>
+                         <li>Multiple Dimensions per Tileset
+                         <li>E.g. Forecast Time, Elevation
+                         <li>Multiple Types
+                            <ul>
+                               <li>List of Values
+                               <li>Intervals
+                               <li>Regular Expression
+                            </ul>
+                         <li>Use-Case: <a href="">BoM MetEye</a>
+                     </ul>
+                   </section>
+                   <section>
+                      <h2>Time</h2>
+                      <ul>
+                         <li>Each timestamp corresponds to a limited extent
+                         <li>Dynamic Mosaic given a requested time interval
+                         <li>c.f. ESA ngEO Presentation
+                     </ul>
+                   </section>
+                </section>
+                
+                <section>
+                   <section>
+                      <h2>What's coming next</h2>
+                      <ul>
+                         <li>TMS/GDAL source
+                         <li>Native
+                         <li>S3, Riak Caches
+                         <li>Vector Tiles (UTFGrid)
+                         <li>Multiple Types
+                            <ul>
+                               <li>List of Values
+                               <li>Intervals
+                               <li>Regular Expression
+                            </ul>
+                         <li>Use-Case: <a href="">BoM MetEye</a>
+                     </ul>
+                   </section>
+                   <section>
+                      <h2>Time</h2>
+                      <ul>
+                         <li>Each timestamp corresponds to a limited extent
+                         <li>Dynamic Mosaic given a requested time interval
+                         <li>c.f. ESA ngEO Presentation
+                     </ul>
                    </section>
                 </section>
 
