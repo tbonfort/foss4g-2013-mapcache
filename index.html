@@ -49,6 +49,17 @@
 
                 <section>
                     <section>
+                        <h2>What's a Tiling Server</h2>
+                        <ul>
+                           <li>Precomputed 256x256 images for fast access to static data
+                           <li>Grid (projection, extent, resolutions)
+                           <li>Source (WMS, MapServer, GDAL)
+                           <li>Cache
+                           <li>Tileset
+                           <li>Service
+                        </ul>
+                    </section>
+                    <section>
                         <h2>What's MapCache?</h2>
                         <ul>
                            <li>Tiling Library with Apache, FastCGI, Nginx and Node frontends
@@ -58,8 +69,8 @@
                                  <li>Multiple Protocols
                                  <li>Tile Management Features: seeding, recompression, interpolation
                               </ul>
-                           <li>Native Code: Fast and Efficient
-                           <li>Ease Deployment: Demo interface
+                           <li>Native code: Fast and Efficient
+                           <li>Ease deployment: Demo interface
                     </section>
                     <section>
                         <h2>History</h2>
@@ -88,6 +99,7 @@
                                  <li>Simple, just provide a base directory
                                  <li>Fast
                                  <li>Supports blank tile detection
+                                 <li>(Re-)Use custom layouts: TileCache, ArcGis, Template
                               </ul>
                            </li>
                            <li>Cons
@@ -161,23 +173,110 @@
                    <section>
                       <h2>Protocols</h2>
                       <ul>
-                         <li>Standard Tile addressing: TMS, WMTS, XYZ
+                         <li>XYZ etc...
                          <li>KML
                          <li>WMS
+                      </ul>
+                   </section>
+                   <section>
+                      <h2>Standard Tile Addressing</h2>
+                      <ul>
+                         <li>TMS
+                         <li>WMTS (RestFull + KVP)
+                         <li>VirtualEarth QuadKeys
+                         <li>MapGuide
+                         <li>Google x,y,z
+                      </ul>
+                   </section>
+                   <section>
+                      <h2>OGC</h2>
+                      <ul>
+                         <li>WMS
+                            <ul>
+                               <li>WMS-Tiled
+                               <li>Responds to untiled requests by assembling tiles
+                               <li>Can mirror a full WMS service
+                               <li>Forwards GetFeatureInfo requests
+                            </ul>
+                         </li>
+                         <li>(OGC) Proxy
+                            <ul>
+                               <li>Intercepts requests that can be served from cached tiles
+                               <li>Forwards other requests to other upstream server(s)
+                            </ul>
+                         </li>
+                      </ul>
+                   </section>
+                </section>
 
 
                 <section>
                     <section>
-                        <h2>ngEO Browse Server</h2>
+                        <h2>Image Operations</h2>
+                        <ul>
+                           <li>Image data can be recompressed/optimized before being stored into a tile
+                              <ul>
+                                 <li>Avoid double JPEG compression, i.e. request PNG from source WMS
+                                 <li>Be agressive on compression when storing a tile (e.g. quantized PNG with max compression)
+                                 <li>CPU time for dynamic recompressions can be lowered, at the cost of more bandwidth 
+                              </ul>
                     </section>
                     <section>
-                        <h2>OGC's WMTS and WMS standards</h2>
+                        <h2>Image Formats</h2>
+                        <ul>
+                           <li>PNG
+                              <ul>
+                                 <li>Compression level
+                                 <li>Quantization (color reduction to 8bit palette)
+                              </ul>
+                           <li>JPEG
+                              <ul>
+                                 <li>Compression level
+                                 <li>RGB/YCbCr
+                              </ul>
+                           <li>Mixed (JPEG + PNG)
+                              <ul>
+                                 <li>Use for raster coverages on limited areas
+                                 <li>PNG for tiles with transparency
+                                 <li>JPEG otherwise
+                              </ul>
+                        </ul>
                     </section>
                     <section>
-                        <h2>Entirely Open Source Software: GDAL, MapServer, EOxServer, and MapCache</h2>
+                        <h2>Handling Empty/Uniform Tiles</h2>
+                        <ul>
+                           <li>Strategy dependent on the cache backend
+                           <li>
+                              <ul>
+                                 <li>Symbolic linking
+                                 <li>Reconstruct Paletted 1bit PNG from uniform color
+                                 <li>For fully seeded caches, treat absent tile as fully transparent
+                              </ul>
+                        </ul>
                     </section>
                 </section>
 
+                <section>
+                   <section>
+                      <h2>Grids</h2>
+                      <ul>
+                         <li>Multiple Grids per Tileset (e.g. WGS84 + Mercator)
+                         <li>Handles Grid Aliasing
+                            <ul>
+                               <li>EPSG:3857/EPSG:900913
+                               <li>Non Standard Codes
+                            </ul>
+                         <li>Grid Subsets
+                            <ul>
+                               <li>min/max resolution
+                               <li>Restricted extent (with tolerance!)
+                            </ul>
+                      </ul>
+                   </section>
+                </section>
+
+
+                <!--
                 <section>
                     <section>
                         <h2><a href="http://mapserver.org/trunk/en/mapcache/index.html">MapCache</a> Features/Enhancements</h2>
@@ -250,7 +349,7 @@
                         </ul>
                     </section>
                 </section>
-
+                -->
                 <section>
                     <section>
                         <h2>Conclusions / Outlook</h2>
