@@ -81,6 +81,130 @@
                     </section>
                 </section>
 
+
+                <section>
+                   <section>
+                      <h2>Protocols</h2>
+                      <ul>
+                         <li>XYZ etc...
+                         <li>KML
+                         <li>WMS
+                      </ul>
+                   </section>
+                   <section>
+                      <h2>Standard Tile Addressing</h2>
+                      <ul>
+                         <li>TMS
+                         <li>WMTS (RestFull + KVP)
+                         <li>VirtualEarth QuadKeys
+                         <li>MapGuide
+                         <li>Google x,y,z
+                      </ul>
+                   </section>
+                   <section>
+                      <h2>WMS</h2>
+                      <ul>
+                         <li>WMS-Tiled
+                         <li>Responds to untiled requests by assembling tiles
+                         <li>Can mirror a full WMS service: layer-by-layer, layer lists
+                         <li>Forwards GetFeatureInfo requests
+                      </ul>
+                      <img src="tile-assembling.png"/>
+                   </section>
+                   <section>
+                      <h2>(OGC) Proxy</h2>
+                            <ul>
+                               <li>Intercepts requests that can be served from cached tiles
+                               <li>Forwards other requests to other upstream server(s)
+                               <li>Use Case</li>
+                            </ul>
+                   </section>
+                </section>
+                <section>
+                   <section>
+                      <h2>Miscellaneous</h2>
+                      <ul>
+                         <li>Caching HTTP Headers
+                         <li>"Auto" Expiry of old tiles
+                         <li>Error Reporting
+                            <ul>
+                               <li>Error Message
+                               <li>Empty Image
+                               <li>Status Code
+                            </ul>
+                         <li>Meta-Tiling
+                         <li>Watermarking
+                         <li>Max-Cached-Zoom: Upsample lower level tiles 
+                      </ul>
+                   </section>
+               </section>
+
+
+                <section>
+                    <section>
+                        <h2>Image Operations</h2>
+                        <ul>
+                           <li>Image data can be recompressed/optimized before being stored into a tile
+                              <ul>
+                                 <li>Avoid double JPEG compression, i.e. request PNG from source WMS
+                                 <li>Be agressive on compression when storing a tile (e.g. quantized PNG with max compression)
+                                 <li>CPU time for dynamic recompressions can be lowered, at the cost of more bandwidth 
+                              </ul>
+                    </section>
+                    <section>
+                        <h2>Image Formats</h2>
+                        <ul>
+                           <li>PNG
+                              <ul>
+                                 <li>Compression level
+                                 <li>Quantization (color reduction to 8bit palette)
+                              </ul>
+                           <li>JPEG
+                              <ul>
+                                 <li>Compression level
+                                 <li>RGB/YCbCr
+                              </ul>
+                           <li>Mixed (JPEG + PNG)
+                              <ul>
+                                 <li>Use for raster coverages on limited areas
+                                 <li>PNG for tiles with transparency
+                                 <li>JPEG otherwise
+                              </ul>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Handling Empty/Uniform Tiles</h2>
+                        <ul>
+                           <li>Strategy dependent on the cache backend
+                           <li>
+                              <ul>
+                                 <li>Symbolic linking
+                                 <li>Reconstruct Paletted 1bit PNG from uniform color
+                                 <li>For fully seeded caches, treat absent tile as fully transparent
+                              </ul>
+                        </ul>
+                    </section>
+                </section>
+                
+                <section>
+                   <section>
+                      <h2>Grids</h2>
+                      <ul>
+                         <li>Multiple Grids per Tileset (e.g. WGS84 + Mercator)
+                         <li>Handles Grid Aliasing
+                            <ul>
+                               <li>EPSG:3857/EPSG:900913
+                               <li>Non Standard Codes
+                            </ul>
+                         <li>Grid Subsets
+                            <ul>
+                               <li>min/max resolution
+                               <li>Restricted extent (with tolerance!)
+                            </ul>
+                      </ul>
+                   </section>
+                </section>
+                
                 <section>
                     <section>
                         <h2>Caches</h2>
@@ -167,113 +291,8 @@
                                  <li>Updates/deletion of individual tiles does not reclaim storage space
                               </ul>
                            </li>
-                           <li>Use-Case: TBD
+                           <li>Use-Case
                         </ul> 
-                    </section>
-                </section>
-
-                <section>
-                   <section>
-                      <h2>Protocols</h2>
-                      <ul>
-                         <li>XYZ etc...
-                         <li>KML
-                         <li>WMS
-                      </ul>
-                   </section>
-                   <section>
-                      <h2>Standard Tile Addressing</h2>
-                      <ul>
-                         <li>TMS
-                         <li>WMTS (RestFull + KVP)
-                         <li>VirtualEarth QuadKeys
-                         <li>MapGuide
-                         <li>Google x,y,z
-                      </ul>
-                   </section>
-                   <section>
-                      <h2>OGC</h2>
-                      <ul>
-                         <li>WMS
-                            <ul>
-                               <li>WMS-Tiled
-                               <li>Responds to untiled requests by assembling tiles
-                               <li>Can mirror a full WMS service
-                               <li>Forwards GetFeatureInfo requests
-                            </ul>
-                         </li>
-                         <li>(OGC) Proxy
-                            <ul>
-                               <li>Intercepts requests that can be served from cached tiles
-                               <li>Forwards other requests to other upstream server(s)
-                            </ul>
-                         </li>
-                      </ul>
-                   </section>
-                </section>
-                <section>
-                   <section>
-                      <h2>Miscellaneous</h2>
-                      <ul>
-                         <li>Caching HTTP Headers
-                         <li>"Auto" Expiry of old tiles
-                         <li>Error Reporting
-                            <ul>
-                               <li>Error Message
-                               <li>Empty Image
-                               <li>Status Code
-                            </ul>
-                         <li>Meta-Tiling
-                         <li>Watermarking
-                         <li>Max-Cached-Zoom: Upsample lower level tiles 
-                      </ul>
-                   </section>
-               </section>
-
-
-                <section>
-                    <section>
-                        <h2>Image Operations</h2>
-                        <ul>
-                           <li>Image data can be recompressed/optimized before being stored into a tile
-                              <ul>
-                                 <li>Avoid double JPEG compression, i.e. request PNG from source WMS
-                                 <li>Be agressive on compression when storing a tile (e.g. quantized PNG with max compression)
-                                 <li>CPU time for dynamic recompressions can be lowered, at the cost of more bandwidth 
-                              </ul>
-                    </section>
-                    <section>
-                        <h2>Image Formats</h2>
-                        <ul>
-                           <li>PNG
-                              <ul>
-                                 <li>Compression level
-                                 <li>Quantization (color reduction to 8bit palette)
-                              </ul>
-                           <li>JPEG
-                              <ul>
-                                 <li>Compression level
-                                 <li>RGB/YCbCr
-                              </ul>
-                           <li>Mixed (JPEG + PNG)
-                              <ul>
-                                 <li>Use for raster coverages on limited areas
-                                 <li>PNG for tiles with transparency
-                                 <li>JPEG otherwise
-                              </ul>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Handling Empty/Uniform Tiles</h2>
-                        <ul>
-                           <li>Strategy dependent on the cache backend
-                           <li>
-                              <ul>
-                                 <li>Symbolic linking
-                                 <li>Reconstruct Paletted 1bit PNG from uniform color
-                                 <li>For fully seeded caches, treat absent tile as fully transparent
-                              </ul>
-                        </ul>
                     </section>
                 </section>
 
@@ -295,24 +314,6 @@
                    </section>
                 </section>
 
-                <section>
-                   <section>
-                      <h2>Grids</h2>
-                      <ul>
-                         <li>Multiple Grids per Tileset (e.g. WGS84 + Mercator)
-                         <li>Handles Grid Aliasing
-                            <ul>
-                               <li>EPSG:3857/EPSG:900913
-                               <li>Non Standard Codes
-                            </ul>
-                         <li>Grid Subsets
-                            <ul>
-                               <li>min/max resolution
-                               <li>Restricted extent (with tolerance!)
-                            </ul>
-                      </ul>
-                   </section>
-                </section>
                 
                 <section>
                    <section>
@@ -326,7 +327,7 @@
                                <li>Intervals
                                <li>Regular Expression
                             </ul>
-                         <li>Use-Case: <a href="">BoM MetEye</a>
+                         <li>Use-Case: <a href="http://www.bom.gov.au/australia/meteye/">BoM MetEye</a>
                      </ul>
                    </section>
                    <section>
@@ -334,7 +335,7 @@
                       <ul>
                          <li>Each timestamp corresponds to a limited extent
                          <li>Dynamic Mosaic given a requested time interval
-                         <li>c.f. ESA ngEO Presentation
+                         <li>c.f. ESA ngEO Presentation at 15:00
                      </ul>
                    </section>
                 </section>
@@ -347,107 +348,8 @@
                          <li>Native
                          <li>S3, Riak Caches
                          <li>Vector Tiles (UTFGrid)
-                         <li>Multiple Types
-                            <ul>
-                               <li>List of Values
-                               <li>Intervals
-                               <li>Regular Expression
-                            </ul>
-                         <li>Use-Case: <a href="">BoM MetEye</a>
                      </ul>
                    </section>
-                   <section>
-                      <h2>Time</h2>
-                      <ul>
-                         <li>Each timestamp corresponds to a limited extent
-                         <li>Dynamic Mosaic given a requested time interval
-                         <li>c.f. ESA ngEO Presentation
-                     </ul>
-                   </section>
-                </section>
-
-
-                <!--
-                <section>
-                    <section>
-                        <h2><a href="http://mapserver.org/trunk/en/mapcache/index.html">MapCache</a> Features/Enhancements</h2>
-                    </section>
-                    <section>
-                        <h2>Time dimension support</h2>
-                        <p>Visual representations of search results e.g. single browses or all browses in a specific time interval</p>
-                        <pre><code data-trim contenteditable>
-<tileset name="foss4g">
-    ...
-    <timedimension type="sqlite" default="2013">
-        <dbfile>/var/ngeob_data/mapcache.sqlite</dbfile>
-        <query>select strftime('%Y-%m-%dT%H:%M:%SZ',start_time)||'/'||strftime('%Y-%m-%dT%H:%M:%SZ',end_time) from time where source_id=:tileset and start_time&lt;=datetime(:end_timestamp,'unixepoch') and end_time&gt;=datetime(:start_timestamp,'unixepoch') and maxx&gt;=:minx and maxy&gt;=:miny and minx&lt;=:maxx and miny&lt;=:maxy order by end_time limit 100</query>
-    </timedimension>
-</tileset>
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Read-only functionality</h2>
-                        <pre><code data-trim contenteditable>
-<tileset name="foss4g">
-    ...
-    <read-only>true</read-only>
-</tileset>
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Configure max-cached-zoom</h2>
-                        <pre><code data-trim contenteditable>
-<tileset name="foss4g">
-    ...
-    <grid max-cached-zoom="8" out-of-zoom-strategy="reassemble">
-        WGS84
-    </grid>
-</tileset>
-                        </code></pre>
-                    </section>
-                    <section>
-                        <h2>Storage optimization e.g. detect_blank</h2>
-                        <pre><code data-trim contenteditable>
-<cache name="foss4g" type="sqlite3">
-    <dbfile>foss4g.sqlite</dbfile>
-    <detect_blank>true</detect_blank>
-</cache>
-                        </code></pre>
-                    </section>
-                </section>
-
-                <section>
-                    <section>
-                        <h2>Ingesting and pre-processing of browse images</h2>
-                    </section>
-                    <section>
-                        <h2>Geographic metadata</h2>
-                        <ul>
-                            <li>Footprint polygon</li>
-                            <li>Regular grid of tiepoints</li>
-                            <li>Pre-georeferenced images</li>
-                        </ul>
-                    </section>
-                    <section>
-                        <h2>Optimizations</h2>
-                        <ul>
-                            <li>Footprint generation</li>
-                            <li>Re-projection</li>
-                            <li>Addition of alpha-channel</li>
-                            <li>Internal tilling</li>
-                            <li>Overviews</li>
-                            <li>Compression</li>
-                        </ul>
-                    </section>
-                </section>
-                -->
-                <section>
-                    <section>
-                        <h2>Conclusions / Outlook</h2>
-                    </section>
-                    <section>
-                        <h2>TBD</h2>
-                    </section>
                 </section>
 
                 <section>
@@ -477,7 +379,7 @@
                 center: true,
 
                 theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-                transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+                transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
 
                 // Optional libraries used to extend on reveal.js
                 dependencies: [
